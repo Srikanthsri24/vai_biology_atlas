@@ -16,6 +16,18 @@ import { ANATOMY_ZOOM, semanticZoom } from '../src/config/education';
 import { canonicalBoneIds } from '../src/data/schoolAnatomy';
 import { validateAnatomy, auditModel } from '../src/utils/validation';
 import { regionKey } from '../src/utils/semantic';
+import { publicUrl, restoredPagesPath } from '../src/utils/basePath';
+
+test('Pages prefixes assets and restores deep links without leaving the repository path',()=>{
+ const base='/vai_biology_atlas/';
+ assert.equal(publicUrl('/models/placeholders/heart.glb',base),base+'models/placeholders/heart.glb');
+ assert.equal(publicUrl('/draco/',base),base+'draco/');
+ assert.equal(publicUrl('https://example.org/heart.glb',base),'https://example.org/heart.glb');
+ const path=base+'atlas/body/heart?learn=1#details';
+ assert.equal(restoredPagesPath('?__atlas_route='+encodeURIComponent(path),base),path);
+ assert.equal(restoredPagesPath('?__atlas_route=https%3A%2F%2Fexample.org',base),null);
+ assert.equal(restoredPagesPath('?__atlas_route=%2Fother%2Fatlas',base),null);
+});
 
 test('school bone catalog has 206 unique entries and all canonical entries are present',()=>{
  assert.equal(canonicalBoneIds.length,206);assert.equal(new Set(canonicalBoneIds).size,206);
