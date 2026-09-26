@@ -1,3 +1,4 @@
+import { publicUrl } from '../utils/basePath';
 import SchoolControls from '../components/controls/SchoolControls';
 import BodyNavigator from '../components/atlas/BodyNavigator';
 import { useEffect, useRef, useState } from 'react';
@@ -67,7 +68,7 @@ export default function Atlas(){
     {s.mode==='section'&&<div className="section-slider"><label htmlFor="section-position">Section depth</label><select aria-label="Section plane" value={s.sectionAxis} onChange={e=>s.set('sectionAxis',e.target.value as typeof s.sectionAxis)}><option value="coronal">Coronal</option><option value="sagittal">Sagittal</option><option value="transverse">Transverse</option></select><input id="section-position" type="range" min="-3" max="3" step=".01" value={section} onChange={e=>setSection(+e.target.value)}/></div>}
     <AnimatePresence>{layers&&<motion.div className="layers-float" initial={{opacity:0,y:8}} animate={{opacity:1,y:0}} exit={{opacity:0,y:8}}><LayerControls onClose={()=>setLayers(false)}/></motion.div>}</AnimatePresence>
     {s.explosion>0&&<ExplodeControls/>}
-    {s.modelStatus==='loading'&&<div className="model-loading"><img src="/favicon.svg" alt=""/><h3>Human Atlas</h3><p>Loading {system?.name??config.name}…</p><div className="progress-track"><span style={{width:`${s.loadingProgress||5}%`}}/></div><strong>{s.loadingProgress?s.loadingProgress+'%':s.loadingStage}</strong><small>{s.loadingStage}</small></div>}
+    {s.modelStatus==='loading'&&<div className="model-loading"><img src={publicUrl('/favicon.svg')} alt=""/><h3>Human Atlas</h3><p>Loading {system?.name??config.name}…</p><div className="progress-track"><span style={{width:`${s.loadingProgress||5}%`}}/></div><strong>{s.loadingProgress?s.loadingProgress+'%':s.loadingStage}</strong><small>{s.loadingStage}</small></div>}
     {s.modelStatus==='error'&&<div className="model-error"><strong>3D anatomy model unavailable</strong><span>{s.developerFallback?'Showing developer geometry.':'Check the asset and texture files.'}</span><button onClick={()=>{clearModelCache(model);s.set('retry',s.retry+1);}}>Retry model</button></div>}
     <div className="viewer-hint">Left-drag to rotate <span>·</span> Wheel to zoom <span>·</span> Right-drag to pan</div>
    </div>
