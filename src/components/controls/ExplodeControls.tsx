@@ -1,0 +1,3 @@
+import { Layers3 } from 'lucide-react';
+import { useAtlasStore } from '../../store/atlasStore';
+export default function ExplodeControls(){const value=useAtlasStore(s=>s.explosion),set=useAtlasStore(s=>s.setExplosion);return <div className="explode-panel"><div><span><Layers3 size={15}/> Exploded anatomy</span><strong>{Math.round(value*100)}%</strong><button onClick={()=>set(0)}>Assemble</button></div><input aria-label="Explosion distance" type="range" min="0" max="100" step="1" value={value*100} onChange={e=>set(+e.target.value/100)}/><div className="range-markers"><span>Assembled</span><span>25</span><span>50</span><span>75</span><span>Exploded</span></div><p>Schematic separation · anatomical relationships are simplified</p></div>}

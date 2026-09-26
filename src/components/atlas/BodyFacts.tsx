@@ -1,0 +1,4 @@
+import { Link } from 'react-router-dom';
+import { ArrowUpRight } from 'lucide-react';
+import { bodyFacts } from '../../data/bodyFacts';
+export default function BodyFacts({compact=false}:{compact?:boolean}){return <section className={`body-facts ${compact?'compact':''}`} aria-label="Human body overview"><div className="eyebrow">A DIGITAL HUMAN BIOLOGY LABORATORY</div><h2>Discover what’s inside you.</h2><p>Start with a question. Follow a structure. See how the body connects.</p><div className="facts-grid">{bodyFacts.slice(0,compact?6:9).map(f=><Link key={f.id} to={f.route} title={f.note}><strong>{f.value}</strong><span>{f.label}<ArrowUpRight size={15}/></span><small>{f.note}</small></Link>)}</div><p className="fact-caveat">Counts describe human anatomy, not the number of authored models in this atlas. Estimates vary; development geometry is clearly labelled.</p></section>;}

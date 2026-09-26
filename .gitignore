@@ -1,0 +1,10 @@
+node_modules/
+dist/
+.sites-runtime/
+*.local
+*.tsbuildinfo
+
+.cache/
+.env
+.env.*
+!.env.example

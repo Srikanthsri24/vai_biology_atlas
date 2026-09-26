@@ -1,0 +1,1 @@
+Place authored medical-quality GLB/glTF assets here using the filenames in ../../../../ASSET_GUIDE.md. No licensed medical assets are bundled here. Development GLBs are kept separately in ../../placeholders/.

@@ -1,0 +1,3 @@
+import { anatomy, isWithin } from './anatomyTree';
+import { anatomyModels, modelRoute, systems } from './modelRegistry';
+export function anatomyRoute(id:string){const n=anatomy[id];if(!n)return '/atlas';if(n.modelId&&anatomyModels[n.modelId])return `${modelRoute(anatomyModels[n.modelId])}/${id}`;if(n.type==='system'){const system=systems.find(s=>s.id===id.replace(/-system$/,''));if(system)return `/systems/${system.id}`;}const model=Object.values(anatomyModels).find(m=>m.root!=='body'&&!m.systemId&&isWithin(id,m.root));return model?`${modelRoute(model)}${id===model.root?'':`/${id}`}`:`/atlas/body/${id}`;}
