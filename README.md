@@ -76,5 +76,11 @@ See [UPGRADE_REPORT.md](UPGRADE_REPORT.md) for the requested implementation summ
 
 ## School laboratory upgrade
 
+## GitHub Pages deployment
+
+The workflow in `.github/workflows/pages.yml` tests, builds and deploys `main` to GitHub Pages. Select **GitHub Actions** under repository **Settings → Pages → Source**. The Pages build uses Node 24 and `pnpm build:pages`, including the `/vai_biology_atlas/` base path and a 404 redirect for direct anatomy links. Model files, decoders and logos use the same deployment prefix. Regular `pnpm build` keeps the root-path configuration for other hosts.
+
+## School laboratory upgrade details
+
 See [SCHOOL_PASS_REPORT.md](SCHOOL_PASS_REPORT.md) for the current 20-point delivery report, exact mapped counts, feature limitations and verification. New controls include regional semantic zoom, learning levels, guided paths, classroom presentation, body facts, structures filtering, Back view history, and explicit microscopic concepts.
 
