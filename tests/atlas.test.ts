@@ -26,8 +26,36 @@ import { journeyRoutes, journeyStudies } from '../src/data/journeyCatalog';
 import { moleculeAssembly } from '../src/data/journeyMolecules';
 import { travelFrame } from '../src/data/journeyTravel';
 import { journeyLibrary, journeyCategories, journeyTopicUrl, getJourneyTopic, filterJourneyTopics, type JourneyFilters } from '../src/data/journeyLibrary';
+import { biologyModules, biologySubjects, classMap, sceneParts } from '../src/data/biology';
+import { crossGenotypes, defaultLabInputs, labResponse, virtualLabs } from '../src/data/virtualLabs';
 import openModels from '../src/data/openModels.generated.json';
 import { clampDepth, journeyStages, journeyParts, journeySelectable, stageIndex, travelPosition } from '../src/data/journey';
+
+test('biology modules cover every class and subject with valid scenes and distinct lessons',()=>{
+ assert.equal(biologyModules.length,32);assert.equal(new Set(biologyModules.map(module=>module.id)).size,32);
+ assert.deepEqual(classMap.map(item=>item.classLevel),Array.from({length:12},(_,i)=>i+1));
+ for(const item of classMap){assert.ok(item.modules.length>=2);assert.ok(item.modules.every(module=>module.classLevel===item.classLevel));}
+ for(const subject of biologySubjects)assert.ok(biologyModules.some(module=>module.subject===subject));
+ for(const module of biologyModules){assert.ok(sceneParts[module.scene]);assert.ok(module.explanation.length>50);assert.ok(module.activity.length>25);}
+ for(const lab of virtualLabs)assert.ok(lab.classes.every(grade=>grade>=1&&grade<=12));
+});
+test('all nine monohybrid crosses preserve probabilities and expected Mendelian combinations',()=>{
+ for(const a of ['AA','Aa','aa'] as const)for(const b of ['AA','Aa','aa'] as const){const result=crossGenotypes(a,b);assert.equal(result.cells.length,4);assert.equal(Object.values(result.counts).reduce((sum,value)=>sum+value,0),4);assert.equal(result.dominant+result.recessive,1);assert.deepEqual(result.counts,crossGenotypes(b,a).counts);}
+ assert.deepEqual(crossGenotypes('Aa','Aa').counts,{AA:1,Aa:2,aa:1});
+ assert.deepEqual(crossGenotypes('AA','aa').counts,{AA:0,Aa:4,aa:0});
+ assert.deepEqual(crossGenotypes('Aa','aa').counts,{AA:0,Aa:2,aa:2});
+});
+test('virtual laboratory responses are bounded and react to controlled inputs',()=>{
+ assert.equal(labResponse('photosynthesis',{...defaultLabInputs,light:0}).value,0);
+ assert.equal(labResponse('photosynthesis',{...defaultLabInputs,co2:0}).value,0);
+ assert.equal(labResponse('enzymes',{...defaultLabInputs,substrate:0}).value,0);
+ assert.equal(labResponse('enzymes',{...defaultLabInputs,enzyme:0}).value,0);
+ assert.equal(labResponse('osmosis',defaultLabInputs).scale,1);
+ assert.ok(labResponse('osmosis',{...defaultLabInputs,inside:100,outside:0}).scale>1);
+ assert.ok(labResponse('osmosis',{...defaultLabInputs,inside:0,outside:100}).scale<1);
+ assert.ok(labResponse('enzymes',{...defaultLabInputs,temperature:37}).value>labResponse('enzymes',{...defaultLabInputs,temperature:80}).value);
+ for(const value of [NaN,Infinity,-1000,0,1000])for(const id of ['photosynthesis','enzymes','osmosis'] as const){const result=labResponse(id,{...defaultLabInputs,light:value,co2:value,temperature:value,inside:value,outside:value,ph:value,substrate:value,enzyme:value});assert.ok(Number.isFinite(result.value));assert.ok(result.value>=0&&result.value<=150);}
+});
 
 test('all 120 guided journeys have unique IDs, specific lessons and valid scene deep links',()=>{
  assert.equal(journeyLibrary.length,120);assert.equal(journeyCategories.length,15);
