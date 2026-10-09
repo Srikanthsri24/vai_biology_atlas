@@ -39,6 +39,15 @@ export function extendAnatomy(data:Catalog){
  for(const n of Object.values(data)){n.type??=n.children.length?'region':n.layer==='skeleton'?'bone':n.layer==='nervous'?'nerve':n.layer==='muscles'?'muscle':n.layer==='skin'?'region':'organ';n.meshNames??=[`${n.type==='organ'?'organ':n.type==='bone'?'bone':n.type==='muscle'?'muscle':'structure'}_${n.id.replaceAll('-','_')}`];n.authored??=true;n.region??=isAncestor(n.id,'head',data)?'Head & Neck':isAncestor(n.id,'chest',data)?'Thorax / Chest':isAncestor(n.id,'abdomen',data)?'Abdomen':isAncestor(n.id,'arms',data)?'Upper Limb':isAncestor(n.id,'legs',data)?'Lower Limb':isAncestor(n.id,'pelvis',data)?'Pelvis':'Whole body';}
  for(const id of ['femur','tibia','fibula','knee']){data[id].meshNames!.push(`bone_${id}_left`);data[`right-${id}`].meshNames!.push(`bone_${id}_right`);}
  data['left-lung'].meshNames!.push('organ_left_lung');data['right-lung'].meshNames!.push('organ_right_lung');
+ const femaleDetails:Record<string,[string,string[]]>={
+ 'female-reproductive-anatomy':['The ovaries, uterine tubes, uterus, cervix and vagina form connected reproductive structures within the pelvis.',['Oocyte development','Hormone production','Support of reproduction']],
+ ovaries:['Paired gonads containing follicles that support developing oocytes. Ovarian tissue also produces estrogen and progesterone.',['Oocyte development and release','Sex hormone production']],
+ 'uterine-tubes':['Paired tubes with open ends near the ovaries. Cilia and smooth muscle assist transport toward the uterus.',['Oocyte transport','Usual site of fertilization']],
+ uterus:['A muscular pelvic organ whose inner lining changes during the menstrual cycle and can support implantation.',['Cyclic endometrial changes','Support of pregnancy']],
+ cervix:['The lower part of the uterus, containing a canal that connects the uterine cavity with the vagina.',['Connection between uterus and vagina','Cervical mucus production']],
+ vagina:['A muscular canal extending from the cervix to the exterior. It provides a passage for menstrual flow and forms part of the birth canal.',['Menstrual outflow','Part of the birth canal']]
+ };
+ for(const [id,[description,functions]] of Object.entries(femaleDetails)){Object.assign(data[id],{description,functions,authored:true,modelId:'female-reproductive',source:'https://openstax.org/books/anatomy-and-physiology-2e/pages/27-2-anatomy-and-physiology-of-the-female-reproductive-system'});}
  data['pharynx'].systems=['respiratory','digestive'];data.pancreas.systems=['digestive','endocrine'];data.ovaries.systems=['female-reproductive','endocrine'];data.testes.systems=['male-reproductive','endocrine'];data.thymus.systems=['lymphatic','immune','endocrine'];data.spleen.systems=['lymphatic','immune'];
 }
 function title(value:string){return value[0].toUpperCase()+value.slice(1);}

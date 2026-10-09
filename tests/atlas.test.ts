@@ -19,6 +19,9 @@ import { regionKey } from '../src/utils/semantic';
 import { publicUrl, restoredPagesPath } from '../src/utils/basePath';
 import { simulations, motionScale, phaseIndex } from '../src/data/simulations';
 import { useSimulationStore, simulationClock } from '../src/store/simulationStore';
+import { catalogPreviewModel, isDedicatedPreview } from '../src/data/previewPolicy';
+import { studyCollections } from '../src/data/studyCollections';
+import { anatomyRoute } from '../src/data/anatomyRoutes';
 import openModels from '../src/data/openModels.generated.json';
 
 test('installed detailed GLBs parse, map every mesh, and preserve selectable heart and muscle assemblies',async()=>{
@@ -34,10 +37,10 @@ test('installed detailed GLBs parse, map every mesh, and preserve selectable hea
  }
 });
 
-test('all seven physiology lessons link to real metadata and valid atlas routes',()=>{
- assert.equal(simulations.length,7);assert.equal(new Set(simulations.map(s=>s.id)).size,7);
+test('all physiology lessons link to real metadata and valid atlas routes',()=>{
+ assert.equal(simulations.length,12);assert.equal(new Set(simulations.map(s=>s.id)).size,simulations.length);
  for(const lesson of simulations){
-  assert.ok(anatomy[lesson.focus],lesson.focus);
+  assert.ok(anatomy[lesson.focus],lesson.focus);assert.ok(anatomyModels[lesson.model],lesson.model);
   lesson.routeIds.forEach(id=>assert.ok(anatomy[id],id));
   assert.equal(lesson.stages.length,4);assert.ok(lesson.duration>0);
   const [,kind,id,selection]=lesson.route.split('/');
@@ -160,3 +163,12 @@ test('every bundled development GLB parses and every mesh maps to metadata',asyn
  }
 });
 
+
+test('public previews avoid external intimate anatomy and female studies resolve to their dedicated explorer',()=>{
+ for(const id of ['body','male','female','integumentary-system'])assert.equal(catalogPreviewModel(id),'skeletal-body');
+ for(const id of ['male-reproductive','female-reproductive'])assert.equal(isDedicatedPreview(id),true);
+ for(const collection of studyCollections)for(const structure of collection.structures)assert.ok(anatomy[structure.id],structure.id);
+ for(const id of ['ovaries','uterine-tubes','uterus','cervix','vagina'])assert.equal(anatomyRoute(id),`/systems/female-reproductive/${id}`);
+ assert.ok(motionScale('urination','bladder',.5)[0]>motionScale('urination','bladder',.8)[0]);
+ assert.ok(motionScale('bile','gallbladder',.625)[0]<1);
+});

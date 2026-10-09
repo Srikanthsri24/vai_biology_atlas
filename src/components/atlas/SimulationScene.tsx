@@ -32,7 +32,7 @@ export default function SimulationScene(){
    const t=(simulationClock.phase+index/12)%1;
 
    if(points.length===1){
-    if(lesson.id!=='filtration'){dot.visible=false;return;}
+    if(!['filtration','ovarian'].includes(lesson.id)){dot.visible=false;return;}
     // Conceptual kidney processing loop; no invented nephron mesh mapping.
     point.copy(points[0]);point.x+=Math.cos(t*Math.PI*2)*size.x*.4;point.y+=Math.sin(t*Math.PI*2)*size.y*.4;point.z+=size.z*.55;
    }else{
@@ -40,7 +40,7 @@ export default function SimulationScene(){
     const u=progress*(points.length-1),segment=Math.min(points.length-2,Math.floor(u));
     point.lerpVectors(points[segment],points[segment+1],u-segment);
    }
-   dot.position.copy(point);dot.scale.setScalar(unit);
+   dot.position.copy(point);dot.scale.setScalar(unit*(lesson.id==='ovarian'?1+.2*Math.sin(simulationClock.phase*Math.PI*2):1));
    const oxygenated=t>=.4&&t<.85;
    (dot.material as MeshBasicMaterial).color.set(lesson.id==='circulation'?(oxygenated?'#df6b73':'#66a4cd'):lesson.color);
    dot.visible=state.markers&&lesson.id!=='contraction';

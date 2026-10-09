@@ -37,3 +37,13 @@ Add a lesson definition and its `SimulationId`, valid atlas route, focus/route a
 ## Validation
 
 `node scripts/run-ts.mjs tests/atlas.test.ts` checks 20 regressions, including lesson routes and metadata, pause-on-scrub, invalid input bounds, cyclic scale limits and untouched unrelated anatomy. `node scripts/build-pages.mjs` runs TypeScript and builds for the GitHub Pages repository path. Browser checks cover 3D rendering, playback, stage selection, speed, clipping and mobile explanations.
+
+## Expanded studies and public previews
+
+The lab now includes bladder storage/voiding, bile release, exocrine pancreatic secretion, the ovarian cycle and uterine-tube transport. Each lesson defines its preview model in `src/data/simulations.ts`; there is no parallel preview-index array. Bladder filling and gallbladder contraction use bounded mesh deformation. New route overlays use actual scene bounds; the ovarian ring indicates activity rather than depicting follicles.
+
+Female reproductive organs have individual library routes, descriptions and functions. Female and urinary assets remain schematic. The explanations cite OpenStax and describe timing, geometry and solver limitations in the viewer.
+
+`src/data/previewPolicy.ts` chooses a skeleton for external-body catalog previews. Dedicated reproductive studies use a neutral preview card until opened. This affects public collection previews only; dedicated explorers still expose educational anatomy. The home hero is the interactive detailed skeleton. The library exposes all 30 nonsystem model entries, plus six focused collections; Body Systems exposes major structure links and function filters.
+
+The expanded library mounts one WebGL preview at a time. Preview buttons are separate from study links and are keyboard accessible. This avoids graphics context exhaustion when browsing the 30-module gallery.

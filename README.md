@@ -89,4 +89,4 @@ See [SCHOOL_PASS_REPORT.md](SCHOOL_PASS_REPORT.md) for the current 20-point deli
 
 ## Living Organs
 
-Open `/living` for seven interactive 3D physiology lessons with playback, scrubbing, speed controls and sourced explanations. See [LIVING_ORGANS.md](LIVING_ORGANS.md) for implementation, asset quality and simulation limits.
+Open `/living` for 12 interactive 3D physiology lessons with playback, scrubbing, speed controls and sourced explanations. See [LIVING_ORGANS.md](LIVING_ORGANS.md) for implementation, asset quality and simulation limits.
