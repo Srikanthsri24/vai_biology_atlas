@@ -41,6 +41,7 @@ for(const system of systems){anatomyModels[system.modelId]=model(system.modelId,
 for(const config of Object.values(anatomyModels)){config.urls=[...config.urls.slice(0,2).map(url=>url.replace('/models/','/models/production/')),...config.urls];config.lod={...config.lod,[config.category==='Microscopic'?'micro':config.root==='body'?'body':config.category==='Regions'?'region':'structure']:config.urls[0]};if(config.root!=='body'&&!config.systemId&&!config.parentAnchor)config.parentAnchor={structureId:config.root,position:[0,0,0],rotation:[0,0,0],scale:1};}
 for(const [id,asset] of Object.entries(openModels)){const config=anatomyModels[id];if(config){config.urls.unshift(asset.url);config.lod=undefined;}}
 for(const id of ['body','male'])anatomyModels[id].previewUrl=openModels['integumentary-system'].url;
+anatomyModels['female-reproductive'].developmentUrl='/models/placeholders/female-reproductive.glb?revision=2';
 export const layers:{id:LayerId;name:string;color:string;direction:Vec3}[]=[
  {id:'tendons',name:'Tendons',color:'#dfd4b4',direction:[-.7,0,.2]},
  {id:'ligaments',name:'Ligaments',color:'#d5c89f',direction:[.3,0,.2]},

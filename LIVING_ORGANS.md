@@ -47,3 +47,7 @@ Female reproductive organs have individual library routes, descriptions and func
 `src/data/previewPolicy.ts` chooses a skeleton for external-body catalog previews. Dedicated reproductive studies use a neutral preview card until opened. This affects public collection previews only; dedicated explorers still expose educational anatomy. The home hero is the interactive detailed skeleton. The library exposes all 30 nonsystem model entries, plus six focused collections; Body Systems exposes major structure links and function filters.
 
 The expanded library mounts one WebGL preview at a time. Preview buttons are separate from study links and are keyboard accessible. This avoids graphics context exhaustion when browsing the 30-module gallery.
+
+Reproductive 3D previews appear on Body Systems and Living Organs using the explicit study preview context. Public landing previews keep the neutral policy. Both pages also provide prominent links to the reproductive systems and female physiology lessons.
+
+The female reproductive fallback now has a pear-shaped uterine surface, bilateral ovarian meshes, curved uterine tubes and fimbriae, cervix and vaginal canal (21 selectable schematic meshes). Regenerate with `node scripts/run-ts.mjs scripts/generate-female-study.ts`. It remains illustrative geometry, not licensed clinical anatomy. The revisioned development URL prevents reuse of the older five-marker asset from browser caches.

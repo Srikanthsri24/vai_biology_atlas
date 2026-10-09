@@ -34,3 +34,5 @@ await writeFile(`${directory}/LICENSE.txt`,'These generated schematic developmen
 await writeFile('public/models/anatomy-manifest.json',JSON.stringify({models:anatomyModels,structures:anatomy},null,2));
 for(const folder of ['body','systems','organs','regions','micro']){await mkdir(`public/models/production/${folder}`,{recursive:true});await writeFile(`public/models/production/${folder}/README.md`,'Place authored medical-quality GLB/glTF assets here using the filenames in ../../../../ASSET_GUIDE.md. No licensed medical assets are bundled here. Development GLBs are kept separately in ../../placeholders/.\n');}
 
+
+if(!process.env.ATLAS_MODEL_FILTER||process.env.ATLAS_MODEL_FILTER==='female-reproductive')await import('./generate-female-study');

@@ -160,13 +160,14 @@ test('every bundled development GLB parses and every mesh maps to metadata',asyn
   const buffer=await readFile(`public/models/placeholders/${config.id}.glb`);const asset=await new GLTFLoader().parseAsync(buffer.buffer.slice(buffer.byteOffset,buffer.byteOffset+buffer.byteLength),'');
   let count=0;asset.scene.traverse(object=>{if(object instanceof Mesh){count++;assert.ok(mapMeshToAnatomy(object),`${config.id}: ${object.name}`);}});assert.ok(count>0,config.id);
   if(config.id==='body'){const report=auditModel(asset.scene,config.id);assert.equal(report.bones,206);assert.equal(report.muscles,80);}
+  if(config.id==='female-reproductive'){const mapped:Record<string,number>={};asset.scene.traverse(o=>{if(o instanceof Mesh){const id=mapMeshToAnatomy(o)!;mapped[id]=(mapped[id]??0)+1;}});assert.equal(mapped.ovaries,2);assert.ok(mapped['uterine-tubes']>=2);for(const id of ['uterus','cervix','vagina'])assert.ok(mapped[id]);}
  }
 });
 
 
 test('public previews avoid external intimate anatomy and female studies resolve to their dedicated explorer',()=>{
  for(const id of ['body','male','female','integumentary-system'])assert.equal(catalogPreviewModel(id),'skeletal-body');
- for(const id of ['male-reproductive','female-reproductive'])assert.equal(isDedicatedPreview(id),true);
+ for(const id of ['male-reproductive','female-reproductive']){assert.equal(isDedicatedPreview(id),true);assert.equal(isDedicatedPreview(id,'study'),false);}
  for(const collection of studyCollections)for(const structure of collection.structures)assert.ok(anatomy[structure.id],structure.id);
  for(const id of ['ovaries','uterine-tubes','uterus','cervix','vagina'])assert.equal(anatomyRoute(id),`/systems/female-reproductive/${id}`);
  assert.ok(motionScale('urination','bladder',.5)[0]>motionScale('urination','bladder',.8)[0]);
