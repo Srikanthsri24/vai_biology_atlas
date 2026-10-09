@@ -1,3 +1,4 @@
+import { expandCurriculum } from './curriculumExpansion';
 export type BiologySubject='Plant biology'|'Animal biology'|'Genetics'|'Molecular biology';
 export type BiologyScene='plant'|'flower'|'butterfly'|'plant-cell'|'animal-cell'|'dna'|'translation'|'division';
 export type BiologyModule={id:string;classLevel:number;title:string;subject:BiologySubject;scene:BiologyScene;overview:string;explanation:string;activity:string};
@@ -36,7 +37,7 @@ const lessons:Lesson[]=[
  [11,'Enzymes and reaction conditions','Molecular biology','animal-cell','Explore how conditions influence a hypothetical enzyme.','Enzyme activity depends on substrate availability and molecular conditions. Temperature and pH responses differ among enzymes.','Run controlled comparisons in the enzyme lab; identify its assumed optimum.'],
  [12,'Molecular tools and model limits','Molecular biology','dna','Connect sequence information with molecular investigation.','Molecular biology investigates DNA, RNA and proteins using experimental tools. The current scenes do not simulate sequencing, PCR or gene editing.','Propose what additional controls and measurements a real DNA experiment would require.']
 ];
-export const biologyModules:BiologyModule[]=lessons.map(([classLevel,title,subject,scene,overview,explanation,activity])=>({id:title.toLowerCase().replace(/[^a-z0-9]+/g,'-'),classLevel,title,subject,scene,overview,explanation,activity}));
+export const biologyModules:BiologyModule[]=expandCurriculum(lessons.map(([classLevel,title,subject,scene,overview,explanation,activity])=>({id:title.toLowerCase().replace(/[^a-z0-9]+/g,'-'),classLevel,title,subject,scene,overview,explanation,activity})));
 export const biologySubjects:BiologySubject[]=['Plant biology','Animal biology','Genetics','Molecular biology'];
 export const biologyModule=(id:string|undefined)=>biologyModules.find(module=>module.id===id);
 export const classMap=Array.from({length:12},(_,index)=>({classLevel:index+1,band:index<5?'Discover & observe':index<8?'Compare & explain':index<10?'Connect & investigate':'Analyse & evaluate',modules:biologyModules.filter(module=>module.classLevel===index+1)}));

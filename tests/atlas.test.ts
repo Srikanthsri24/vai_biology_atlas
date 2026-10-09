@@ -28,13 +28,14 @@ import { travelFrame } from '../src/data/journeyTravel';
 import { journeyLibrary, journeyCategories, journeyTopicUrl, getJourneyTopic, filterJourneyTopics, type JourneyFilters } from '../src/data/journeyLibrary';
 import { biologyModules, biologySubjects, classMap, sceneParts } from '../src/data/biology';
 import { crossGenotypes, defaultLabInputs, labResponse, virtualLabs } from '../src/data/virtualLabs';
+import { labControls, responseMaximum } from '../src/data/labControls';
 import openModels from '../src/data/openModels.generated.json';
 import { clampDepth, journeyStages, journeyParts, journeySelectable, stageIndex, travelPosition } from '../src/data/journey';
 
 test('biology modules cover every class and subject with valid scenes and distinct lessons',()=>{
- assert.equal(biologyModules.length,32);assert.equal(new Set(biologyModules.map(module=>module.id)).size,32);
+ assert.equal(biologyModules.length,332);assert.equal(new Set(biologyModules.map(module=>module.id)).size,332);
  assert.deepEqual(classMap.map(item=>item.classLevel),Array.from({length:12},(_,i)=>i+1));
- for(const item of classMap){assert.ok(item.modules.length>=2);assert.ok(item.modules.every(module=>module.classLevel===item.classLevel));}
+ for(const item of classMap){assert.ok(item.modules.length>=25&&item.modules.length<=50);assert.ok(item.modules.every(module=>module.classLevel===item.classLevel));}
  for(const subject of biologySubjects)assert.ok(biologyModules.some(module=>module.subject===subject));
  for(const module of biologyModules){assert.ok(sceneParts[module.scene]);assert.ok(module.explanation.length>50);assert.ok(module.activity.length>25);}
  for(const lab of virtualLabs)assert.ok(lab.classes.every(grade=>grade>=1&&grade<=12));
@@ -292,3 +293,5 @@ test('every functional route camera remains finite, bounded, and faces a separat
 test('journey explanation panel contains no outbound reading or atlas-reference links',async()=>{
  const page=await readFile('src/pages/Journey.tsx','utf8');assert.ok(!page.includes('Read the biology'));assert.ok(!page.includes('Open detailed anatomy atlas'));assert.ok(!page.includes('href={stage.source}'));
 });
+
+test('expanded labs provide unique protocols, controlled responses and complete apparatus configuration',()=>{assert.equal(virtualLabs.length,104);assert.equal(new Set(virtualLabs.map(lab=>lab.id)).size,104);assert.equal(new Set(virtualLabs.map(lab=>lab.engine)).size,13);for(const lab of virtualLabs){assert.equal(lab.steps.length,4);assert.ok(lab.principle.length>20);assert.ok(labControls[lab.engine]);const response=labResponse(lab.engine,defaultLabInputs);assert.ok(Number.isFinite(response.value));assert.ok(response.value>=0&&response.value<=responseMaximum(lab.engine));for(const control of labControls[lab.engine]){for(const value of [NaN,Infinity,-1000,10000]){const result=labResponse(lab.engine,{...defaultLabInputs,[control.key]:value});assert.ok(Number.isFinite(result.value),lab.id+' '+control.key);}}}});
