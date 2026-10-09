@@ -25,8 +25,42 @@ import { anatomyRoute } from '../src/data/anatomyRoutes';
 import { journeyRoutes, journeyStudies } from '../src/data/journeyCatalog';
 import { moleculeAssembly } from '../src/data/journeyMolecules';
 import { travelFrame } from '../src/data/journeyTravel';
+import { journeyLibrary, journeyCategories, journeyTopicUrl, getJourneyTopic, filterJourneyTopics, type JourneyFilters } from '../src/data/journeyLibrary';
 import openModels from '../src/data/openModels.generated.json';
 import { clampDepth, journeyStages, journeyParts, journeySelectable, stageIndex, travelPosition } from '../src/data/journey';
+
+test('all 120 guided journeys have unique IDs, specific lessons and valid scene deep links',()=>{
+ assert.equal(journeyLibrary.length,120);assert.equal(journeyCategories.length,15);
+ assert.equal(new Set(journeyLibrary.map(topic=>topic.id)).size,120);
+ assert.equal(new Set(journeyLibrary.map(topic=>topic.description)).size,120);
+ for(const topic of journeyLibrary){
+  assert.ok(topic.description.length>35);assert.ok(topic.takeaway.length>25);
+  assert.ok(journeyRoutes[topic.path]);assert.ok(journeyStages[topic.level]);
+  if(topic.study)assert.ok(journeyStudies[topic.level]?.some(study=>study.id===topic.study));
+  const url=new URL(journeyTopicUrl(topic),'https://atlas.example');
+  assert.equal(url.pathname,`/journey/${journeyStages[topic.level].id}`);
+  assert.equal(getJourneyTopic(url.searchParams.get('journey'))?.id,topic.id);
+  assert.equal(url.searchParams.get('path'),topic.path);
+  assert.equal(url.searchParams.get('study'),topic.study??null);
+ }
+ assert.equal(getJourneyTopic('invalid-topic'),undefined);
+ for(const category of journeyCategories)assert.equal(journeyLibrary.filter(topic=>topic.category===category).length,8);
+});
+test('journey search and combined category, scale, level and progress filters are deterministic',()=>{
+ const base:JourneyFilters={search:'',category:'all',scale:'all',difficulty:'all',savedOnly:false,completedOnly:false,sort:'recommended'};
+ assert.equal(filterJourneyTopics(base).length,120);
+ assert.equal(filterJourneyTopics({...base,category:'Female reproductive'}).length,8);
+ assert.equal(filterJourneyTopics({...base,category:'Male reproductive'}).length,8);
+ const oxygen=filterJourneyTopics({...base,search:'  OXYGEN  molecule ',scale:'6',difficulty:'Advanced'});
+ assert.ok(oxygen.length>0);assert.ok(oxygen.every(topic=>topic.level===6));
+ const id=journeyLibrary[0].id;
+ assert.deepEqual(filterJourneyTopics({...base,savedOnly:true},[id]).map(topic=>topic.id),[id]);
+ assert.deepEqual(filterJourneyTopics({...base,completedOnly:true},[],[id]).map(topic=>topic.id),[id]);
+ assert.equal(filterJourneyTopics({...base,savedOnly:true,completedOnly:true},[id],[]).length,0);
+ assert.equal(filterJourneyTopics({...base,search:'unmatchablexyz'}).length,0);
+ const sorted=filterJourneyTopics({...base,sort:'title'}).map(topic=>topic.title);
+ assert.deepEqual(sorted,[...sorted].sort((a,b)=>a.localeCompare(b)));
+});
 
 test('journey deep links resolve all scales and selectable structures have explanations',()=>{
  assert.equal(journeyStages.length,7);

@@ -40,3 +40,19 @@ Sixteen microscopic labs: cellular architecture/transport, translation, division
 - `src/components/journey/JourneyLesson.tsx`: in-platform lessons and knowledge checks.
 
 To add a route, extend the path type and route registry, provide its tissue component and camera path, then run the catalog, model, molecular and travel tests. To add a microscopic lab, extend the level's study array and scene dispatch. Study IDs are stable URL parameters. Keep explanations honest about procedural teaching geometry and preserve mandatory asset attribution in the license notices.
+
+## Guided journey library
+
+The library contains 120 individually described topics in 15 categories. Open **Explore all 120 journeys** to search titles, descriptions, takeaways and shared-scene names. Combine category, starting scale and learning-level filters, sort alphabetically, or show saved/studied topics. Results are paginated in groups of 12. Empty results offer a reset. Saved and explicitly studied topics persist locally on this device; no account or backend is required.
+
+Each topic has a stable `journey` query ID, a route, starting scale, optional lab, description and takeaway. For example, `/journey/cell?path=blood&journey=follicular-cell-proliferation&study=division` opens its lesson and shared mitosis scene. Topic context stays visible while navigating scales. **Open topic’s 3D scene** returns to its configured lab. Manual core-route selection exits the guided topic.
+
+These are 120 educational journeys, not 120 unique anatomical models. Dedicated tissue geometry is currently available for the six core routes. Other topics use labelled shared cellular and molecular scenes with explanations of specialized anatomy. Female and male reproductive lessons explicitly distinguish somatic mitosis from meiosis and general cells from reproductive-cell reconstructions. Required asset credits are unchanged; no public outbound reading links are introduced.
+
+- `src/data/journeyLibrary.ts`: catalog, stable topic URLs, search and combined-filter logic. Add an entry to an existing category or a new collection here.
+- `src/components/journey/JourneyLibrary.tsx`: accessible search/filter controls, result cards, pagination and saved/studied views.
+- `src/components/journey/JourneyTopicLesson.tsx`: per-topic observation, explanation and connection prompts.
+- `src/hooks/useJourneyProgress.ts`: versioned local progress storage, resilient to unavailable or invalid storage.
+- `src/styles/journeyLibrary.css`: responsive library and guided-topic styling.
+
+Internal editorial checks use introductory anatomy, cell biology and physiology references. Public explanatory copy is written for Human Atlas; the catalog does not claim comprehensive clinical coverage.
