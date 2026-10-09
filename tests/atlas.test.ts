@@ -19,6 +19,20 @@ import { regionKey } from '../src/utils/semantic';
 import { publicUrl, restoredPagesPath } from '../src/utils/basePath';
 import { simulations, motionScale, phaseIndex } from '../src/data/simulations';
 import { useSimulationStore, simulationClock } from '../src/store/simulationStore';
+import openModels from '../src/data/openModels.generated.json';
+
+test('installed detailed GLBs parse, map every mesh, and preserve selectable heart and muscle assemblies',async()=>{
+ const seen=new Set<string>();
+ for(const [model,entry]of Object.entries(openModels)){
+  if(seen.has(entry.url))continue;seen.add(entry.url);
+  const buffer=await readFile(`public${entry.url}`);assert.equal(buffer.length,entry.bytes);
+  const asset=await new GLTFLoader().parseAsync(buffer.buffer.slice(buffer.byteOffset,buffer.byteOffset+buffer.byteLength),'');
+  const report=auditModel(asset.scene,model);assert.equal(report.meshes,entry.meshes);assert.deepEqual(report.unmapped,[]);
+  if(model==='heart')for(const id of ['left-atrium','right-atrium','left-ventricle','right-ventricle'])assert.ok(report.mappedIds.includes(id),id);
+  if(model==='muscular-body')assert.ok(report.mappedIds.some(id=>isWithin(id,'biceps-brachii-left')));
+  if(model==='body'){assert.ok(report.meshes>1200);assert.ok(!report.mappedIds.some(id=>id.startsWith('real-kidneys')));}
+ }
+});
 
 test('all seven physiology lessons link to real metadata and valid atlas routes',()=>{
  assert.equal(simulations.length,7);assert.equal(new Set(simulations.map(s=>s.id)).size,7);

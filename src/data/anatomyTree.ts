@@ -2,6 +2,7 @@ import type { AnatomyNode, LayerId, Vec3 } from './types';
 import { extendSchoolAnatomy } from './schoolAnatomy';
 import { extendAnatomy } from './extendedAnatomy';
 import { addMuscles } from './muscleData';
+import { addOpenAnatomy } from './openAnatomy';
 export const anatomy: Record<string, AnatomyNode> = {};
 function add(id: string, name: string, parent: string | null, position: Vec3, radius: number, description: string, system = 'Regional anatomy', layer: LayerId = 'organs', scientificName = name, functions: string[] = [], location = '') {
   anatomy[id] = { id, name, parent, scientificName, system, layer, radius, description, functions: functions.length ? functions : [description], location: location || (parent ? anatomy[parent]?.name : 'Whole body') || 'Human body', children: [], modelObjectName: id.replaceAll('-', '_'), cameraTarget: position, cameraPosition: [position[0], position[1], position[2] + radius * 4], explodeDirection: [position[0] > 0 ? .8 : -.8, position[1] > .8 ? .4 : -.3, .6] };
@@ -64,6 +65,7 @@ for(const [id,name,layer,system,d] of [['leg-muscles','Muscles','muscles','Muscu
 extendAnatomy(anatomy);
 addMuscles(anatomy);
 extendSchoolAnatomy(anatomy);
+addOpenAnatomy(anatomy);
 export const roots = ['head','chest','abdomen','pelvis','arms','legs','spine'];
 export function getAncestors(id: string): AnatomyNode[] { const result: AnatomyNode[] = []; const seen = new Set<string>(); let n=anatomy[id]; while(n && !seen.has(n.id)){result.unshift(n);seen.add(n.id);n=anatomy[n.parent??''];} return result; }
 export function isWithin(id: string, ancestor: string): boolean { return getAncestors(id).some(n=>n.id===ancestor); }

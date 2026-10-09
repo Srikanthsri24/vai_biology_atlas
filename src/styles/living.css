@@ -13,3 +13,5 @@
 .right-panel:has(.simulation-explanation){overflow-y:auto}.right-panel:has(.simulation-explanation) .info-content{overflow:visible;flex:none}.simulation-explanation{flex-shrink:0}
 
 .atlas-study-tools{flex-shrink:0}.atlas-study-tools>summary{padding:8px 20px;font-size:10px;color:var(--muted);cursor:pointer;border-bottom:1px solid var(--border)}.atlas-study-tools:not(.living-study-tools)>summary{display:none}
+
+.dissection-presets{position:absolute;top:58px;left:20px;display:flex;gap:3px;padding:4px;border:1px solid #d9e3e5;background:#ffffffed;border-radius:10px;z-index:6}.dissection-presets button{border:0;background:none;padding:7px 10px;border-radius:6px;font-size:11px;color:#45616b;cursor:pointer}.dissection-presets button[aria-pressed=true]{background:#e1f0ef;color:#076f77}.viewer-statusbar a{font-size:10px;color:#397a80;max-width:70%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}@media(max-width:700px){.dissection-presets{top:55px;left:10px}.dissection-presets button{padding:6px 8px}.viewer-statusbar>span{display:none}}

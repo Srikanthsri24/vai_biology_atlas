@@ -1,4 +1,5 @@
 import type { BodySystem, ModelConfig, ModelId, LayerId, Vec3 } from './types';
+import openModels from './openModels.generated.json';
 
 export const systems:BodySystem[] = [
  {id:'integumentary',name:'Integumentary System',layer:'skin',modelId:'integumentary-system',group:'Protection',icon:'shield',description:'Explore the skin and its protective structures.',structures:['skin']},
@@ -38,6 +39,8 @@ for(const [id,name] of [['gallbladder','Gallbladder'],['thyroid','Thyroid'],['sm
 for(const [id,name,parent] of [['neuron','Neuron','nerve-fiber'],['alveolus','Alveolus','bronchioles'],['capillary','Capillary','arteries'],['nephron','Nephron','kidneys']]){anatomyModels[id]=model(id,name,id,`/models/micro/${id}.glb`,'Microscopic');anatomyModels[id].parentAnchor={structureId:parent,position:[0,0,0],rotation:[0,0,0],scale:1};}
 for(const system of systems){anatomyModels[system.modelId]=model(system.modelId,system.id==='muscular'?'Complete Muscular Human Body':system.name,system.id.includes('reproductive')?`${system.id}-anatomy`:'body',`/models/systems/${system.id}.glb`,'Systems');anatomyModels[system.modelId].systemId=system.id;}
 for(const config of Object.values(anatomyModels)){config.urls=[...config.urls.slice(0,2).map(url=>url.replace('/models/','/models/production/')),...config.urls];config.lod={...config.lod,[config.category==='Microscopic'?'micro':config.root==='body'?'body':config.category==='Regions'?'region':'structure']:config.urls[0]};if(config.root!=='body'&&!config.systemId&&!config.parentAnchor)config.parentAnchor={structureId:config.root,position:[0,0,0],rotation:[0,0,0],scale:1};}
+for(const [id,asset] of Object.entries(openModels)){const config=anatomyModels[id];if(config){config.urls.unshift(asset.url);config.lod=undefined;}}
+for(const id of ['body','male'])anatomyModels[id].previewUrl=openModels['integumentary-system'].url;
 export const layers:{id:LayerId;name:string;color:string;direction:Vec3}[]=[
  {id:'tendons',name:'Tendons',color:'#dfd4b4',direction:[-.7,0,.2]},
  {id:'ligaments',name:'Ligaments',color:'#d5c89f',direction:[.3,0,.2]},

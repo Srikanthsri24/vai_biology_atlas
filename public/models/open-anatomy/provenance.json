@@ -1,0 +1,29 @@
+{
+  "sources": {
+    "vanatome": "https://raw.githubusercontent.com/vixotic/Vanatome/8185b3fa46a1dbefdd907390918c57954fd9b816",
+    "bodyexplorer": "https://raw.githubusercontent.com/JohanBellander/BodyExplorer/7d04bf3c4de2bd9cb234dd51d7e6857c099afafd"
+  },
+  "license": "CC BY-SA 4.0",
+  "modifications": "Coordinate registration, mesh selection, anatomical identifiers, natural tissue colors, module exports. Kidney meshes excluded because upstream notices identify an NC source.",
+  "bones.glb": {
+    "url": "https://raw.githubusercontent.com/JohanBellander/BodyExplorer/7d04bf3c4de2bd9cb234dd51d7e6857c099afafd/public/skeleton.glb",
+    "sha256": "894ed0e98a266b727a7e290f0d4123bb087c4afe84a48d55af71d1a351ca99a5"
+  },
+  "muscles.glb": {
+    "url": "https://raw.githubusercontent.com/JohanBellander/BodyExplorer/7d04bf3c4de2bd9cb234dd51d7e6857c099afafd/public/anatomy.glb",
+    "sha256": "6e84529b60b64cc8f8d5cef665fda932e359e828b66d0c2dd44ec1bd9d0bd01f"
+  },
+  "body.glb": {
+    "url": "https://raw.githubusercontent.com/vixotic/Vanatome/8185b3fa46a1dbefdd907390918c57954fd9b816/public/models/z-anatomy-1.4.0-full-body.glb",
+    "sha256": "7d70a2a2da6c9d9902c7422fc7565c922931d01b80a6b025c7774a0439fc50b3"
+  },
+  "manifest.json": {
+    "url": "https://raw.githubusercontent.com/vixotic/Vanatome/8185b3fa46a1dbefdd907390918c57954fd9b816/public/models/z-anatomy-1.4.0-manifest.json",
+    "sha256": "41d504081fe6c1b2c8835835e2bb8d7c352ea3df5bb1309312e632fd9301c4dc"
+  },
+  "registrationTranslation": [
+    -0.00004372280091047287,
+    0.05596163123846054,
+    -0.10113936150446534
+  ]
+}

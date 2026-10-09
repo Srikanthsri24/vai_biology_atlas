@@ -1,3 +1,5 @@
+> **Detailed mesh upgrade:** see [REAL_ANATOMY.md](REAL_ANATOMY.md) for installed assets, coverage and licensing. This supersedes earlier placeholder-only notes.
+
 <!-- Current implementation details: SCHOOL_PASS_REPORT.md -->
 # Human Atlas
 

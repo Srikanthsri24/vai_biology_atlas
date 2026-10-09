@@ -14,6 +14,8 @@ export function belongsToSystem(id:string,systemId:string,layer?:LayerId):boolea
  return system.structures.some(root=>isWithin(id,root));
 }
 export function getOpacity(id:string,layer:LayerId,s:AtlasState):number{
+ // At overview distance the opaque exterior hides the imported internal datasets.
+ if(s.selectedId==='body'&&!s.systemFilter&&!s.isolation&&s.mode==='normal'&&s.explosion===0&&s.zoomLevel==='BODY'&&s.visibleLayers.skin&&s.layerOpacity.skin>.95&&layer!=='skin')return 0;
  if(!s.visibleLayers[layer]||s.hiddenIds.some(h=>isWithin(id,h)))return 0;
  if(s.layerIsolation&&s.layerIsolation!==layer)return 0;
  if(s.isolation&&!isWithin(id,s.isolation))return 0;

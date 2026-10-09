@@ -1,0 +1,157 @@
+{
+  "body": {
+    "url": "/models/open-anatomy/body.glb",
+    "meshes": 1299,
+    "bytes": 57565784
+  },
+  "male": {
+    "url": "/models/open-anatomy/body.glb",
+    "meshes": 1299,
+    "bytes": 57565784
+  },
+  "muscular-body": {
+    "url": "/models/open-anatomy/muscular-body.glb",
+    "meshes": 467,
+    "bytes": 25293808
+  },
+  "skeletal-body": {
+    "url": "/models/open-anatomy/skeletal-body.glb",
+    "meshes": 201,
+    "bytes": 9900808
+  },
+  "integumentary-system": {
+    "url": "/models/open-anatomy/integumentary-system.glb",
+    "meshes": 236,
+    "bytes": 3493996
+  },
+  "nervous-system": {
+    "url": "/models/open-anatomy/nervous-system.glb",
+    "meshes": 234,
+    "bytes": 9432800
+  },
+  "endocrine-system": {
+    "url": "/models/open-anatomy/endocrine-system.glb",
+    "meshes": 10,
+    "bytes": 217376
+  },
+  "cardiovascular-system": {
+    "url": "/models/open-anatomy/cardiovascular-system.glb",
+    "meshes": 64,
+    "bytes": 4713304
+  },
+  "lymphatic-system": {
+    "url": "/models/open-anatomy/lymphatic-system.glb",
+    "meshes": 54,
+    "bytes": 759088
+  },
+  "immune-system": {
+    "url": "/models/open-anatomy/immune-system.glb",
+    "meshes": 54,
+    "bytes": 759084
+  },
+  "respiratory-system": {
+    "url": "/models/open-anatomy/respiratory-system.glb",
+    "meshes": 7,
+    "bytes": 932104
+  },
+  "digestive-system": {
+    "url": "/models/open-anatomy/digestive-system.glb",
+    "meshes": 12,
+    "bytes": 2467548
+  },
+  "male-reproductive": {
+    "url": "/models/open-anatomy/male-reproductive.glb",
+    "meshes": 14,
+    "bytes": 369712
+  },
+  "heart": {
+    "url": "/models/open-anatomy/heart.glb",
+    "meshes": 25,
+    "bytes": 2030308
+  },
+  "brain": {
+    "url": "/models/open-anatomy/brain.glb",
+    "meshes": 237,
+    "bytes": 9472000
+  },
+  "lungs": {
+    "url": "/models/open-anatomy/lungs.glb",
+    "meshes": 44,
+    "bytes": 3450032
+  },
+  "liver": {
+    "url": "/models/open-anatomy/liver.glb",
+    "meshes": 2,
+    "bytes": 236968
+  },
+  "stomach": {
+    "url": "/models/open-anatomy/stomach.glb",
+    "meshes": 1,
+    "bytes": 173628
+  },
+  "pancreas": {
+    "url": "/models/open-anatomy/pancreas.glb",
+    "meshes": 1,
+    "bytes": 95592
+  },
+  "spleen": {
+    "url": "/models/open-anatomy/spleen.glb",
+    "meshes": 1,
+    "bytes": 25528
+  },
+  "intestines": {
+    "url": "/models/open-anatomy/intestines.glb",
+    "meshes": 7,
+    "bytes": 1667796
+  },
+  "bladder": {
+    "url": "/models/open-anatomy/bladder.glb",
+    "meshes": 1,
+    "bytes": 56240
+  },
+  "gallbladder": {
+    "url": "/models/open-anatomy/gallbladder.glb",
+    "meshes": 1,
+    "bytes": 14592
+  },
+  "thyroid": {
+    "url": "/models/open-anatomy/thyroid.glb",
+    "meshes": 5,
+    "bytes": 62520
+  },
+  "small-intestine": {
+    "url": "/models/open-anatomy/small-intestine.glb",
+    "meshes": 2,
+    "bytes": 532472
+  },
+  "large-intestine": {
+    "url": "/models/open-anatomy/large-intestine.glb",
+    "meshes": 5,
+    "bytes": 1135768
+  },
+  "skull": {
+    "url": "/models/open-anatomy/skull.glb",
+    "meshes": 24,
+    "bytes": 2733404
+  },
+  "head": {
+    "url": "/models/open-anatomy/head.glb",
+    "meshes": 482,
+    "bytes": 17526776
+  },
+  "hand": {
+    "url": "/models/open-anatomy/hand.glb",
+    "meshes": 51,
+    "bytes": 1303580
+  },
+  "foot": {
+    "url": "/models/open-anatomy/foot.glb",
+    "meshes": 48,
+    "bytes": 646184
+  },
+  "leg": {
+    "url": "/models/open-anatomy/leg.glb",
+    "meshes": 122,
+    "bytes": 3922404
+  }
+}

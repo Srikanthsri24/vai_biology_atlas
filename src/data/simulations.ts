@@ -21,7 +21,7 @@ export function motionScale(id:SimulationId,meshId:string,phase:number):[number,
  }
  if(id==='breathing'&&meshId.includes('lung'))return [1+breath*.09,1+breath*.13,1+breath*.09];
  if(id==='breathing'&&meshId==='diaphragm')return [1,1-breath*.18,1];
- if(id==='contraction'&&meshId==='biceps-brachii-left')return [1+breath*.12,1-breath*.2,1+breath*.12];
+ if(id==='contraction'&&(meshId==='biceps-brachii-left'||meshId.startsWith('real-')&&meshId.includes('left-biceps-brachii')))return [1+breath*.12,1-breath*.2,1+breath*.12];
  if(id==='digestion'&&['esophagus','stomach','small-intestine','large-intestine'].includes(meshId))return [1+pulse*.035,1-pulse*.035,1+pulse*.035];
  return [1,1,1];
 }

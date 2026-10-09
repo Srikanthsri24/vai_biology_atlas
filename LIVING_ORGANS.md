@@ -1,3 +1,5 @@
+> Updated model coverage: detailed open meshes now power many lessons. See [REAL_ANATOMY.md](REAL_ANATOMY.md); kidney and microscopic lessons remain schematic.
+
 # Living Organs upgrade
 
 Open `/living`, or choose **Living organs** inside any atlas. Each lesson opens an existing 3D atlas with `?simulation=<id>`. Press Play, choose 0.25–2× playback, scrub the cycle, or select an explained stage. The simulation starts paused, including for users who prefer reduced motion. Background tabs do not advance the simulation.
