@@ -84,3 +84,7 @@ The workflow in `.github/workflows/pages.yml` tests, builds and deploys `main` t
 
 See [SCHOOL_PASS_REPORT.md](SCHOOL_PASS_REPORT.md) for the current 20-point delivery report, exact mapped counts, feature limitations and verification. New controls include regional semantic zoom, learning levels, guided paths, classroom presentation, body facts, structures filtering, Back view history, and explicit microscopic concepts.
 
+
+## Living Organs
+
+Open `/living` for seven interactive 3D physiology lessons with playback, scrubbing, speed controls and sourced explanations. See [LIVING_ORGANS.md](LIVING_ORGANS.md) for implementation, asset quality and simulation limits.

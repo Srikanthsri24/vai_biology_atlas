@@ -1,3 +1,4 @@
+import SimulationScene from './SimulationScene';
 import DetailLOD from './DetailLOD';
 import EducationalFlow from './EducationalFlow';
 import AttachmentMarkers from './AttachmentMarkers';
@@ -31,7 +32,7 @@ export default function AnatomyViewer({model,preview=false,animated=false,sectio
    <ambientLight intensity={.28}/><hemisphereLight args={['#e5edf3','#77706a',.65]}/><directionalLight position={[3,5,6]} intensity={2.2}/><directionalLight position={[-4,1,4]} intensity={.75}/><directionalLight position={[2,3,-5]} intensity={1.5} color="#ddeaf6"/>
    <Environment resolution={128} frames={1}><Lightformer form="rect" intensity={1.2} position={[4,3,4]} scale={[4,6,1]} target={[0,0,0]}/><Lightformer form="rect" intensity={.55} position={[-4,1,-3]} scale={[3,4,1]} target={[0,0,0]}/></Environment>
    <PerformanceMonitor onDecline={()=>setDpr(1.25)} onIncline={()=>setDpr(Math.min(window.devicePixelRatio,2))}/>
-   <SceneRegistryProvider><Suspense fallback={null}><AnatomyModel model={model} preview={preview} section={section}/><ContactShadows position={[0,config.root==='body'?-3.05:-1.6,0]} opacity={.22} scale={12} blur={2.5} far={6} resolution={512} frames={1}/></Suspense><CameraRig preview={preview} animated={animated}/>{!preview&&<><DetailLOD/><AnatomyLabels/><AttachmentMarkers/><EducationalFlow/></>}</SceneRegistryProvider>
+   <SceneRegistryProvider><Suspense fallback={null}><AnatomyModel model={model} preview={preview} section={section}/><ContactShadows position={[0,config.root==='body'?-3.05:-1.6,0]} opacity={.22} scale={12} blur={2.5} far={6} resolution={512} frames={1}/></Suspense><CameraRig preview={preview} animated={animated}/>{!preview&&<><SimulationScene/><DetailLOD/><AnatomyLabels/><AttachmentMarkers/><EducationalFlow/></>}</SceneRegistryProvider>
   </Canvas></CanvasBoundary>}
   {contextLost&&<div className="canvas-error"><p>The graphics context was interrupted.</p><button className="primary-btn" onClick={()=>setContextLost(false)}>Restore 3D viewer</button></div>}
   {!preview&&hover&&!dragging&&anatomy[hover]&&<div className="anatomy-tooltip"><strong>{anatomy[hover].name}</strong><span>{anatomy[hover].system}</span><small>Click to select · Double-click to focus</small></div>}

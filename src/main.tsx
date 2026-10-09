@@ -12,3 +12,5 @@ const restored=restoredPagesPath(window.location.search);
 if(restored)window.history.replaceState(null,'',restored);
 ReactDOM.createRoot(document.getElementById('root')!).render(<React.StrictMode><BrowserRouter basename={appBase}><App /></BrowserRouter></React.StrictMode>);
 import './styles/school.css';
+
+import './styles/living.css';

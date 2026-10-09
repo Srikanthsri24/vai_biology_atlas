@@ -17,6 +17,38 @@ import { canonicalBoneIds } from '../src/data/schoolAnatomy';
 import { validateAnatomy, auditModel } from '../src/utils/validation';
 import { regionKey } from '../src/utils/semantic';
 import { publicUrl, restoredPagesPath } from '../src/utils/basePath';
+import { simulations, motionScale, phaseIndex } from '../src/data/simulations';
+import { useSimulationStore, simulationClock } from '../src/store/simulationStore';
+
+test('all seven physiology lessons link to real metadata and valid atlas routes',()=>{
+ assert.equal(simulations.length,7);assert.equal(new Set(simulations.map(s=>s.id)).size,7);
+ for(const lesson of simulations){
+  assert.ok(anatomy[lesson.focus],lesson.focus);
+  lesson.routeIds.forEach(id=>assert.ok(anatomy[id],id));
+  assert.equal(lesson.stages.length,4);assert.ok(lesson.duration>0);
+  const [,kind,id,selection]=lesson.route.split('/');
+  assert.ok(kind==='atlas'?anatomyModels[id]:systems.some(s=>s.id===id));
+  if(selection)assert.ok(anatomy[selection]);
+ }
+});
+test('simulation scrubbing pauses playback and clamps invalid input',()=>{
+ const s=useSimulationStore.getState();s.start('heartbeat');assert.equal(useSimulationStore.getState().playing,false);
+ s.toggle();assert.equal(useSimulationStore.getState().playing,true);s.seek(.65);
+ assert.equal(simulationClock.phase,.65);assert.equal(useSimulationStore.getState().playing,false);
+ s.seek(-5);assert.equal(simulationClock.phase,0);s.seek(2);assert.ok(simulationClock.phase<1);
+ s.setSpeed(100);assert.equal(useSimulationStore.getState().speed,2);s.setSpeed(NaN);assert.equal(useSimulationStore.getState().speed,1);
+ s.stop();assert.equal(useSimulationStore.getState().id,null);assert.equal(simulationClock.phase,0);
+});
+test('functional deformation is bounded, cyclic, and leaves unrelated anatomy untouched',()=>{
+ for(const lesson of simulations)for(let phase=0;phase<=1;phase+=.01){
+  for(const id of lesson.routeIds)assert.ok(motionScale(lesson.id,id,phase).every(v=>Number.isFinite(v)&&v>=.75&&v<=1.2));
+  assert.deepEqual(motionScale(lesson.id,'skull',phase),[1,1,1]);
+ }
+ assert.ok(motionScale('heartbeat','left-ventricle',.65)[0]<1);
+ assert.ok(motionScale('breathing','left-lung',.5)[1]>1);
+ assert.ok(motionScale('contraction','biceps-brachii-left',.5)[1]<1);
+ assert.deepEqual([0,.25,.5,.75,1].map(phaseIndex),[0,1,2,3,3]);
+});
 
 test('Pages prefixes assets and restores deep links without leaving the repository path',()=>{
  const base='/vai_biology_atlas/';
