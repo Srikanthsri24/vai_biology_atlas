@@ -61,7 +61,7 @@ function Scene(p:Props&{onLabels:(labels:Label[])=>void;onLoading:(status:Loadin
   depth.current=MathUtils.damp(depth.current,p.depth,3,Math.min(dt,.05));publish.current+=dt;
   if(publish.current>.1){publish.current=0;setNear(Math.round(depth.current));const labels:Label[]=[];
    scene.traverse(o=>{if(!o.userData.journeyLabel||p.hidden?.includes(o.userData.journeyId)||(p.isolated&&p.isolated!==o.userData.journeyId))return;let parent=o.parent;while(parent&&parent.userData.journeyStage===undefined)parent=parent.parent;if(parent?.userData.journeyStage!==Math.round(p.depth))return;
-    const v=o.getWorldPosition(new Vector3()).add(new Vector3(0,.3,0)).project(camera);if(v.z<-1||v.z>1||Math.abs(v.x)>1||Math.abs(v.y)>1)return;labels.push({id:o.userData.journeyId,name:o.userData.journeyLabel,x:(v.x*.5+.5)*size.width,y:(-.5*v.y+.5)*size.height});
+    const v=o.getWorldPosition(new Vector3()).add(new Vector3(0,.3,0)).project(camera);if(v.z<-1||v.z>1||Math.abs(v.x)>1||Math.abs(v.y)>1)return;const x=Math.max(65,Math.min(size.width-65,(v.x*.5+.5)*size.width)),anchorY=(-.5*v.y+.5)*size.height;let y=anchorY;for(const offset of [0,28,-28,56,-56,84,-84]){const candidate=Math.max(85,Math.min(size.height-90,anchorY+offset));if(!labels.some(label=>Math.abs(label.x-x)<110&&Math.abs(label.y-candidate)<25)){y=candidate;break;}}labels.push({id:o.userData.journeyId,name:o.userData.journeyLabel,x,y});
    });p.onLabels(labels);
   }
   if(p.playing&&!document.hidden)p.clock.current+=Math.min(dt,.05)*p.speed;
