@@ -4,10 +4,10 @@ import { CatmullRomCurve3, Group, MathUtils, Mesh, MeshStandardMaterial, Plane, 
 export type StudyProps={selected:string;onSelect:(id:string)=>void;labels:boolean;transparent:boolean;section:boolean;explode:number;playing:boolean;speed:number;clock:{current:number};isolated?:string;hidden?:string[]};
 export function Part({id,position=[0,0,0],offset=[0,0,0],children,p}: {id:string;position?:[number,number,number];offset?:[number,number,number];children:React.ReactNode;p:StudyProps}){
  const group=useRef<Group>(null);
- useFrame((_,dt)=>{if(group.current){group.current.visible=(!p.isolated||p.isolated===id)&&!p.hidden?.includes(id);for(let i=0;i<3;i++)group.current.position.setComponent(i,MathUtils.damp(group.current.position.getComponent(i),position[i]+offset[i]*p.explode,6,Math.min(dt,.05)));}});
+ useFrame((_,dt)=>{if(group.current){let containsSelection=!p.isolated||p.isolated===id;if(!containsSelection)group.current.traverse(o=>{if(o.userData.journeyId===p.isolated)containsSelection=true;});group.current.visible=containsSelection&&!p.hidden?.includes(id);for(let i=0;i<3;i++)group.current.position.setComponent(i,MathUtils.damp(group.current.position.getComponent(i),position[i]+offset[i]*p.explode,6,Math.min(dt,.05)));}});
  useEffect(()=>{group.current?.traverse(o=>{if(o instanceof Mesh)for(const m of (Array.isArray(o.material)?o.material:[o.material]) as MeshStandardMaterial[]){if(!m.emissive)continue;m.userData.journeyEmissive??=m.emissive.clone();m.emissive.copy(m.userData.journeyEmissive);if(p.selected===id)m.emissive.addScalar(.09);}});},[p.selected,id]);
  function select(e:ThreeEvent<MouseEvent>){if(e.delta>5)return;e.stopPropagation();p.onSelect(id);}
- const name=id==='red-cell'?'Red cell':id==='dna'?'DNA':id==='rna'?'RNA':id[0].toUpperCase()+id.slice(1);
+ const name=id==='red-cell'?'Red cell':id==='dna'?'DNA':id==='rna'?'RNA':id==='trna'?'tRNA':id[0].toUpperCase()+id.slice(1).replaceAll('-',' ');
  return <group ref={group} position={position} userData={{journeyId:id,journeyLabel:p.labels?name:undefined}} onClick={select}>{children}</group>;
 }
 export function Material({color,p,opacity=1}:{color:string;p:StudyProps;opacity?:number}){

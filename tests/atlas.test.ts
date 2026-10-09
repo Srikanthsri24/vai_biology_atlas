@@ -22,6 +22,9 @@ import { useSimulationStore, simulationClock } from '../src/store/simulationStor
 import { catalogPreviewModel, isDedicatedPreview } from '../src/data/previewPolicy';
 import { studyCollections } from '../src/data/studyCollections';
 import { anatomyRoute } from '../src/data/anatomyRoutes';
+import { journeyRoutes, journeyStudies } from '../src/data/journeyCatalog';
+import { moleculeAssembly } from '../src/data/journeyMolecules';
+import { travelFrame } from '../src/data/journeyTravel';
 import openModels from '../src/data/openModels.generated.json';
 import { clampDepth, journeyStages, journeyParts, journeySelectable, stageIndex, travelPosition } from '../src/data/journey';
 
@@ -193,4 +196,37 @@ test('public previews avoid external intimate anatomy and female studies resolve
  for(const id of ['ovaries','uterine-tubes','uterus','cervix','vagina'])assert.equal(anatomyRoute(id),`/systems/female-reproductive/${id}`);
  assert.ok(motionScale('urination','bladder',.5)[0]>motionScale('urination','bladder',.8)[0]);
  assert.ok(motionScale('bile','gallbladder',.625)[0]<1);
+});
+
+test('all expanded routes and labs map to available models and explained selectable structures',()=>{
+ assert.equal(Object.keys(journeyRoutes).length,6);
+ for(const route of Object.values(journeyRoutes)){
+  assert.ok(anatomyModels[route.model]);assert.ok(route.choices[route.answer]);
+  for(const id of route.structures)assert.ok(journeyParts[id]?.description,id);
+ }
+ assert.equal(Object.values(journeyStudies).flat().length,16);
+ for(const [level,labs] of Object.entries(journeyStudies)){
+  assert.ok(Number(level)>=3&&Number(level)<=6);
+  assert.equal(new Set(labs.map(lab=>lab.id)).size,labs.length);
+  for(const lab of labs)for(const id of lab.structures)assert.ok(journeyParts[id]?.description,id);
+ }
+});
+test('molecular study graphs preserve molecular composition and atomic valence',()=>{
+ const formulas={'oxygen-molecule':{oxygen:2},'carbon-dioxide':{carbon:1,oxygen:2},glucose:{carbon:6,hydrogen:12,oxygen:6}};
+ for(const [id,formula]of Object.entries(formulas)){
+  const assembly=moleculeAssembly(id),counts:Record<string,number>={},valence=assembly.atoms.map(()=>0);
+  for(const atom of assembly.atoms)counts[atom.id]=(counts[atom.id]??0)+1;
+  assert.deepEqual(counts,formula);
+  for(const [i,[a,b]]of assembly.bonds.entries()){assert.ok(a!==b&&assembly.atoms[a]&&assembly.atoms[b]);const order=assembly.bondOrders?.[i]??1;valence[a]+=order;valence[b]+=order;}
+  assembly.atoms.forEach((atom,i)=>assert.equal(valence[i],atom.id==='carbon'?4:atom.id==='oxygen'?2:1,`${id}:${i}`));
+ }
+});
+test('every functional route camera remains finite, bounded, and faces a separate target',()=>{
+ for(const path of Object.keys(journeyRoutes) as (keyof typeof journeyRoutes)[]){
+  for(const t of [0,.1,.5,.9,1,NaN,-2,3]){const frame=travelFrame(path,t);assert.ok([...frame.position.toArray(),...frame.target.toArray()].every(Number.isFinite));assert.ok(frame.position.distanceTo(frame.target)>.01);assert.ok(frame.position.length()<20);}
+  assert.deepEqual(travelFrame(path,-2),travelFrame(path,0));assert.deepEqual(travelFrame(path,3),travelFrame(path,1));
+ }
+});
+test('journey explanation panel contains no outbound reading or atlas-reference links',async()=>{
+ const page=await readFile('src/pages/Journey.tsx','utf8');assert.ok(!page.includes('Read the biology'));assert.ok(!page.includes('Open detailed anatomy atlas'));assert.ok(!page.includes('href={stage.source}'));
 });

@@ -1,4 +1,6 @@
-export type JourneyPath='blood'|'neuron';
+import { travelFrame } from './journeyTravel';
+import { journeyExtraParts } from './journeyCatalog';
+export type JourneyPath='blood'|'neuron'|'respiratory'|'renal'|'digestive'|'muscle';
 export const journeyStages=[
  {id:'body',name:'Complete body',scale:'Human scale · metres',title:'Start with the whole person',description:'The body connects organs through vessels, nerves and other tissues. Choose a blood or neuron route, then travel to progressively smaller structures.',process:'Explore the anatomy',steps:['Orient yourself in the complete body.','Choose your route.','Move inward to an organ.'],source:'https://openstax.org/books/anatomy-and-physiology-2e/pages/1-2-structural-organization-of-the-human-body'},
  {id:'organ',name:'Organs',scale:'Organ scale · centimetres',title:'A structure built from tissues',description:'The blood route begins at the heart; the neuron route begins at the brain. Their specialized tissues perform coordinated functions.',process:'Organ activity',steps:['An organ contains several tissue types.','Its cells communicate and exchange materials.','Enter the tissue view to inspect those relationships.'],source:'https://openstax.org/books/anatomy-and-physiology-2e/pages/1-2-structural-organization-of-the-human-body'},
@@ -17,10 +19,11 @@ export function journeyLesson(index:number,path:JourneyPath){
  return path==='neuron'?{...stage,title:'Follow a neuron from soma to axon',description:'Explore a schematic cell body, dendrites and axon. Inside travel follows the axon. Animated markers indicate the position of an electrical signal, not a particle moving down the nerve.',process:'Action potential propagation',steps:['Inputs arrive through dendrites and the cell body.','A changing membrane voltage initiates an action potential.','Local ion-channel activity propagates the signal along the axon.'],source:'https://openstax.org/books/anatomy-and-physiology-2e/pages/12-4-the-action-potential'}:{...stage,title:'Travel inside a blood vessel',description:'Move through a schematic vessel lumen, surrounded by the vessel wall. Biconcave teaching models represent red blood cells. Nearby capillaries provide exchange surfaces between blood and tissue.',steps:['Blood moves through a lumen bounded by a vessel wall.','Red blood cells transport oxygen bound to hemoglobin.','Thin capillary walls support exchange with surrounding tissue.']};
 }
 export const journeySelectable:Record<JourneyStageId,string[]>={body:['body'],organ:['organ'],tissue:['wall','red-cell'],cell:['membrane','nucleus','mitochondrion','ribosome','reticulum','golgi','lysosome'],organelle:['mitochondrion','nucleus'],dna:['dna','rna'],molecule:['oxygen','hydrogen']};
-export const travelPosition=(progress:number,path:JourneyPath):[number,number,number]=>[path==='blood'?0:.3,path==='blood'?0:.2,7-Math.max(0,Math.min(1,Number.isFinite(progress)?progress:0))*12];
+export const travelPosition=(progress:number,path:JourneyPath):[number,number,number]=>travelFrame(path,progress).position.toArray() as [number,number,number];
 export const journeyParts:Record<string,{name:string;description:string}>={
- body:{name:'Complete human body',description:'Installed anatomical surface model. Open the full atlas for detailed anatomy layers.'},
- organ:{name:'Organ',description:'An installed heart or brain surface. Continue into tissues to change the viewing scale.'},
+ ...journeyExtraParts,
+ body:{name:'Complete human body',description:'The whole-body view provides orientation before travelling into a selected organ route.'},
+ organ:{name:'Organ',description:'An anatomical surface model. Continue into tissues to discover its microscopic organization.'},
  wall:{name:'Vessel wall',description:'An illustrative tube surrounding the vessel lumen. This is a navigation model, not a specific scanned vessel.'},
  'red-cell':{name:'Red blood cell',description:'A schematic biconcave disc. Mature human red cells carry hemoglobin and have no nucleus.'},
  neuron:{name:'Neuron',description:'A schematic cell body, dendrites and axon. Signal markers represent propagation, not ions travelling the full axon.'},
