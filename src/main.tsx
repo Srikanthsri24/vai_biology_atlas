@@ -14,3 +14,5 @@ ReactDOM.createRoot(document.getElementById('root')!).render(<React.StrictMode><
 import './styles/school.css';
 
 import './styles/living.css';
+
+import './styles/journey.css';

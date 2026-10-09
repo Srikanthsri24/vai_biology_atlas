@@ -1,0 +1,27 @@
+# Journey Inside the Human Body
+
+Open `/journey/body`. Deep links accept `body`, `organ`, `tissue`, `cell`, `organelle`, `dna` and `molecule`. Add `?path=neuron` for the neural route; the default is the blood route. GitHub Pages retains the repository base path through React Router.
+
+The main navigation and home page provide entry points. Scroll over the viewer with **Scale zoom** enabled, drag the scale slider or choose a numbered scale. Turn Scale zoom off to zoom the camera within the current scene. Drag to orbit; use the right mouse button to pan. Arrow keys move between scales; Space plays or pauses when focus is outside a UI control.
+
+At tissue scale, **Travel inside a vessel** or **Travel along an axon** enables camera travel. Play animates travel; the route slider allows manual positioning. Restart resets the clock and travel position. The floating play button remains available in the 3D view on mobile. Structures can be selected with labels, meshes or the information panel, then focused, isolated or hidden. Show all restores visibility. Transparency, section cuts, assembly separation, front/side presets, fullscreen and PNG capture work locally without a backend.
+
+## Scientific scope
+
+The body, heart and brain load installed anatomical GLBs through the existing cached, compression-compatible asset loader. Tissues, cells, organelles, DNA and water are **procedural teaching models**. These scenes illustrate concepts and are not scanned histology, physically continuous zoom through one person, a physiological solver or a molecular dynamics calculation. Section mode clips surfaces without reconstructing tissue at the cut.
+
+The blood route enters a **nucleated vessel-wall cell**, not a mature human red blood cell. Neural markers indicate electrical signal propagation, not a particle travelling along the axon. DNA colors do not encode a real gene sequence. Each scale includes a concise explanation and a primary educational source link.
+
+## Files and extension points
+
+- `src/data/journey.ts`: ordered scales, URL identifiers, explanations, process steps, source links, selectable metadata and bounded travel camera coordinates.
+- `src/pages/Journey.tsx`: URL state, viewer controls, playback and accessible explanatory interface.
+- `src/components/journey/JourneyCanvas.tsx`: cached anatomical assets, smooth scale blending, camera interpolation, scene lifecycle and rendering error boundary.
+- `src/components/journey/JourneyPrimitives.tsx`: reusable selection groups, controlled explosion offsets, material transparency/clipping and teaching markers.
+- `src/components/journey/MicroScenes.tsx`: vessel, neuron, generalized cell, nucleus/mitochondrion, DNA/RNA and water assemblies.
+- `src/styles/journey.css`: responsive viewer, explanations and presentation layout.
+- `tests/atlas.test.ts`: scale/deep-link metadata integrity and bounded, continuous travel positions, alongside existing atlas tests.
+
+Add a scale in the ordered data registry, update the defaults and scene dispatch, and raise the maximum scale in `clampDepth` and the slider. Add new selectable structures to `journeyParts` and `journeySelectable`. A `Part` accepts an assembled `position` and a directional `offset`; explosion interpolates towards `position + offset × amount`. Scene crossfades use the distance from the continuous scale coordinate. New anatomical GLBs belong in the existing model registry; microscopic assets can replace procedural scene components while keeping this interface.
+
+Run `npm run dev`, `npm test`, and `npm run build:pages` using the same project setup as the atlas.

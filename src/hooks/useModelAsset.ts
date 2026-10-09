@@ -20,11 +20,10 @@ export function useModelAsset(model:string,preview=false,allowDevelopment=true){
   report({model,asset:null,status:'loading',progress:0,stage:'Locating anatomy asset'});
   const load=(path:string)=>{const url=publicUrl(path);if(!cache.has(url)){const promise=loader.loadAsync(url,event=>report({progress:event.total?Math.round(event.loaded/event.total*85):0,stage:'Loading geometry and materials'}));cache.set(url,promise);promise.catch(()=>cache.delete(url));}return cache.get(url)!;};
   void (async()=>{try{const installed=await discover(model);const url=installed??(development&&allowDevelopment?(anatomyModels[model].developmentUrl??`/models/placeholders/${model}.glb`):undefined);if(!url){report({status:'missing',stage:'Anatomy asset not installed'});return;}
-   const coarse=installed&&anatomyModels[model].progressiveUrl;if(coarse){try{const previewAsset=await load(coarse);report({asset:previewAsset,stage:'Refining anatomy geometry'});}catch(e){console.warn('[Human Atlas] Optional progressive model unavailable',e);}}
+   const coarse=!preview&&installed&&anatomyModels[model].progressiveUrl;if(coarse){try{const previewAsset=await load(coarse);report({asset:previewAsset,stage:'Refining anatomy geometry'});}catch(e){console.warn('[Human Atlas] Optional progressive model unavailable',e);}}
    const asset=await load(preview&&installed&&anatomyModels[model].previewUrl?anatomyModels[model].previewUrl!:url);report({asset,progress:95,stage:'Preparing labels and interaction'});requestAnimationFrame(()=>report({status:installed?'ready':'procedural',progress:100,stage:installed?'Ready':'Development Anatomy Model'}));
   }catch(error){probes.delete(model);console.error(`[Human Atlas] Model failed: ${model}`,error);report({status:'error',stage:'3D anatomy model unavailable'});}})();
   return()=>{alive=false;/* In-flight cached loads own the decoder workers until completion. */Promise.allSettled([...cache.values()]).finally(()=>{draco.dispose();ktx.dispose();});};
  },[model,retry,preview,gl,development,allowDevelopment]);return result.model===model?result:{model,asset:null,status:'loading' as const,progress:0,stage:'Locating anatomy asset'};
 }
-
 

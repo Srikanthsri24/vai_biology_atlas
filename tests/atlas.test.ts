@@ -23,6 +23,27 @@ import { catalogPreviewModel, isDedicatedPreview } from '../src/data/previewPoli
 import { studyCollections } from '../src/data/studyCollections';
 import { anatomyRoute } from '../src/data/anatomyRoutes';
 import openModels from '../src/data/openModels.generated.json';
+import { clampDepth, journeyStages, journeyParts, journeySelectable, stageIndex, travelPosition } from '../src/data/journey';
+
+test('journey deep links resolve all scales and selectable structures have explanations',()=>{
+ assert.equal(journeyStages.length,7);
+ for(const [index,stage] of journeyStages.entries()){
+  assert.equal(stageIndex(stage.id),index);
+  for(const id of journeySelectable[stage.id])assert.ok(journeyParts[id]?.description,id);
+  assert.ok(stage.source.startsWith('https://openstax.org/'));
+ }
+ assert.equal(stageIndex('not-a-scale'),-1);
+ assert.equal(clampDepth(Infinity),0);assert.equal(clampDepth(-8),0);assert.equal(clampDepth(12),6);assert.equal(clampDepth(3.25),3.25);
+});
+test('inside travel stays bounded and moves continuously along the vessel and axon',()=>{
+ for(const path of ['blood','neuron'] as const){
+  assert.equal(travelPosition(0,path)[2],7);assert.equal(travelPosition(1,path)[2],-5);
+  assert.deepEqual(travelPosition(-1,path),travelPosition(0,path));assert.deepEqual(travelPosition(2,path),travelPosition(1,path));
+  assert.deepEqual(travelPosition(NaN,path),travelPosition(0,path));
+  const before=travelPosition(.5,path),after=travelPosition(.51,path);
+  assert.ok(Math.abs(before[2]-after[2]-.12)<1e-8);assert.equal(before[0],after[0]);
+ }
+});
 
 test('installed detailed GLBs parse, map every mesh, and preserve selectable heart and muscle assemblies',async()=>{
  const seen=new Set<string>();
