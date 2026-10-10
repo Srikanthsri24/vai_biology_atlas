@@ -21,3 +21,25 @@
 .twin-slider small,.twin-session-start small,.twin-review small,.twin-advanced-views small,.twin-footer,.twin-history small,.twin-controls .twin-check{font-size:11px}
 .twin-connection small{font-size:10px}
 .twin-speed select,.twin-session select,.twin-advanced-views select,.twin-capture input{border-color:var(--twin-border)}
+
+/* Prevent intrinsic grid widths from pushing controls outside the page. */
+.digital-twin{width:100%;max-width:1600px;margin-inline:auto;min-width:0;padding:32px clamp(16px,3vw,40px) 24px}
+.twin-heading{flex-wrap:wrap;align-items:flex-start}
+.twin-heading>div{min-width:0;flex:1 1 480px}
+.twin-heading h1{font-size:clamp(27px,2.8vw,40px);overflow-wrap:break-word}
+.twin-heading p{font-size:15px;line-height:1.6}
+.twin-teaching-badge{max-width:100%;white-space:normal;margin-top:10px;line-height:1.5}
+.twin-metrics>*,.twin-workspace>*,.twin-session>*,.twin-review>*{min-width:0}
+.twin-metrics button>span{flex-wrap:wrap;line-height:1.5}
+.twin-metrics strong small{display:inline-block;line-height:1.5}
+.twin-session{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+.twin-session-start label{max-width:100%;min-width:0}
+.twin-session-start select{max-width:100%}
+.twin-session-start small,.twin-phase-question p{overflow-wrap:anywhere}
+.twin-phase-steps{flex-wrap:wrap}
+.twin-phase-steps>span{min-width:120px;line-height:1.5}
+.twin-review{grid-template-columns:minmax(0,1fr) minmax(0,1.5fr)}
+.twin-inspector nav{flex-wrap:wrap}
+.twin-footer p{min-width:0;flex-basis:360px}
+@media(max-width:900px){.twin-workspace{display:flex;flex-direction:column}.twin-scene{order:-1;height:540px;min-height:540px}.twin-controls,.twin-inspector{max-height:none;overflow:visible}.twin-presets{grid-template-columns:1fr 1fr}.twin-inspector nav{float:none}.twin-session,.twin-review{grid-template-columns:minmax(0,1fr)}}
+@media(max-width:650px){.digital-twin{padding:24px 14px}.twin-scene{height:480px;min-height:480px}.twin-heading>div{flex-basis:100%}}
