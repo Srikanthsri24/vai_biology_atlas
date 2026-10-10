@@ -1,3 +1,4 @@
+import { initialTwinState, stepTwin, twinFlow } from '../src/data/digitalTwin';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
@@ -295,3 +296,18 @@ test('journey explanation panel contains no outbound reading or atlas-reference 
 });
 
 test('expanded labs provide unique protocols, controlled responses and complete apparatus configuration',()=>{assert.equal(virtualLabs.length,104);assert.equal(new Set(virtualLabs.map(lab=>lab.id)).size,104);assert.equal(new Set(virtualLabs.map(lab=>lab.engine)).size,13);for(const lab of virtualLabs){assert.equal(lab.steps.length,4);assert.ok(lab.principle.length>20);assert.ok(labControls[lab.engine]);const response=labResponse(lab.engine,defaultLabInputs);assert.ok(Number.isFinite(response.value));assert.ok(response.value>=0&&response.value<=responseMaximum(lab.engine));for(const control of labControls[lab.engine]){for(const value of [NaN,Infinity,-1000,10000]){const result=labResponse(lab.engine,{...defaultLabInputs,[control.key]:value});assert.ok(Number.isFinite(result.value),lab.id+' '+control.key);}}}});
+
+
+test('digital twin coordinates exercise, recovery, stable rest and frozen time',()=>{
+ const rest=initialTwinState();let state=rest;
+ for(let i=0;i<120;i++)state=stepTwin(state,0,.5);
+ assert.equal(state.heartRate,72);assert.equal(state.breathingRate,14);assert.equal(state.demand,1);assert.equal(state.heatLoad,0);assert.equal(twinFlow(state),1);
+ for(let i=0;i<240;i++)state=stepTwin(state,85,.5);
+ const exercised=state;assert.ok(state.heartRate>140);assert.ok(state.breathingRate>35);assert.ok(state.demand>6);assert.ok(state.heatProduction>7);assert.ok(state.heatLoad>0);assert.ok(twinFlow(state)>2);
+ assert.deepEqual(stepTwin(state,100,0),state);
+ for(let i=0;i<600;i++)state=stepTwin(state,0,.5);
+ assert.ok(state.heartRate<exercised.heartRate);assert.ok(state.breathingRate<exercised.breathingRate);assert.ok(state.heatLoad<exercised.heatLoad);assert.ok(state.demand<1.01);
+ for(const input of [NaN,Infinity,-100,200]){const next=stepTwin(rest,input,.5);assert.ok(Object.values(next).every(Number.isFinite));assert.ok(next.heartRate>=72&&next.heartRate<=176);}
+ assert.deepEqual(stepTwin(rest,100,NaN),rest);
+});
+test('digital twin lag remains continuous and approximately frame-rate independent',()=>{let a=initialTwinState(),b=initialTwinState();for(let i=0;i<600;i++)a=stepTwin(a,55,.1);for(let i=0;i<1200;i++)b=stepTwin(b,55,.05);assert.ok(Math.abs(a.heartRate-b.heartRate)<.1);assert.ok(Math.abs(a.breathingRate-b.breathingRate)<.1);const first=stepTwin(initialTwinState(),100,.1);assert.ok(first.heartRate<73);assert.ok(first.demand<1.1);});
