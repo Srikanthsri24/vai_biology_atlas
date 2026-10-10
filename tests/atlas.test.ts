@@ -1,4 +1,4 @@
-import { initialTwinState, stepTwin, twinFlow } from '../src/data/digitalTwin';
+import { initialTwinState, stepTwin, twinFlow, protocolFrame, twinProtocols } from '../src/data/digitalTwin';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFile } from 'node:fs/promises';
@@ -311,3 +311,13 @@ test('digital twin coordinates exercise, recovery, stable rest and frozen time',
  assert.deepEqual(stepTwin(rest,100,NaN),rest);
 });
 test('digital twin lag remains continuous and approximately frame-rate independent',()=>{let a=initialTwinState(),b=initialTwinState();for(let i=0;i<600;i++)a=stepTwin(a,55,.1);for(let i=0;i<1200;i++)b=stepTwin(b,55,.05);assert.ok(Math.abs(a.heartRate-b.heartRate)<.1);assert.ok(Math.abs(a.breathingRate-b.breathingRate)<.1);const first=stepTwin(initialTwinState(),100,.1);assert.ok(first.heartRate<73);assert.ok(first.demand<1.1);});
+
+
+test('guided twin protocols advance at exact boundaries and finish in recovery',()=>{
+ assert.equal(protocolFrame('free',0),null);
+ for(const protocol of twinProtocols){let seconds=0;for(const [index,phase] of protocol.phases.entries()){const frame=protocolFrame(protocol.id,seconds)!;assert.equal(frame.index,index);assert.equal(frame.activity,phase.activity);assert.equal(frame.complete,false);assert.equal(protocolFrame(protocol.id,seconds+phase.seconds-.001)!.index,index);seconds+=phase.seconds;}assert.equal(protocolFrame(protocol.id,seconds)!.complete,true);assert.equal(protocolFrame(protocol.id,seconds+100)!.complete,true);assert.equal(protocol.phases.at(-1)!.activity,0);}
+});
+test('guided intervals retain a thermal footprint across short recovery',()=>{
+ let state=initialTwinState();const observations:Record<string,ReturnType<typeof initialTwinState>>={};let previous='';for(let i=0;i<2150;i++){const phase=protocolFrame('interval',i/10)!;if(previous&&previous!==phase.name)observations[previous]={...state};previous=phase.name;state=stepTwin(state,phase.activity,.1);assert.ok(Object.values(state).every(Number.isFinite));}
+ assert.ok(observations['First effort'].heartRate>120);assert.ok(observations['Short recovery'].heartRate<observations['First effort'].heartRate);assert.ok(observations['Second effort'].heatLoad>observations['First effort'].heatLoad);assert.ok(state.heatLoad<observations['Second effort'].heatLoad);
+});
