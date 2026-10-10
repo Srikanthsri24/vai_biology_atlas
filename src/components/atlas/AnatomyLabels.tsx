@@ -2,7 +2,7 @@ import { learningLevels } from '../../config/education';
 import { regionKey } from '../../utils/semantic';
 import { useMemo, useRef, useState } from 'react';
 import { useFrame } from '@react-three/fiber';
-import { Html } from '@react-three/drei';
+import { SceneHtml as Html } from './SceneHtml';
 import { Box3, MeshStandardMaterial, Raycaster, Vector3 } from 'three';
 import { anatomy, isWithin } from '../../data/anatomyTree';
 import { useAtlasStore } from '../../store/atlasStore';

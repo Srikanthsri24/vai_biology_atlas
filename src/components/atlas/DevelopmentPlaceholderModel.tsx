@@ -1,5 +1,5 @@
 import type { GLTF } from 'three/examples/jsm/loaders/GLTFLoader.js';
-import { Html } from '@react-three/drei';
+import { SceneHtml as Html } from './SceneHtml';
 import GLTFAnatomy from './GLTFAnatomy';
 /** An explicit boundary between test geometry and authored production anatomy. */
 export default function DevelopmentPlaceholderModel({asset,model,preview=false,section=0}:{asset:GLTF;model:string;preview?:boolean;section?:number}){

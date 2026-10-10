@@ -1,5 +1,6 @@
 import { useFrame } from '@react-three/fiber';
-import { Html, Line } from '@react-three/drei';
+import { Line } from '@react-three/drei';
+import { SceneHtml as Html } from './SceneHtml';
 import { useState, useRef } from 'react';
 import { Vector3 } from 'three';
 import { useSceneRegistry } from './SceneRegistry';

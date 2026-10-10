@@ -1,5 +1,5 @@
 import { publicUrl } from '../../utils/basePath';
-import { Html } from '@react-three/drei';
+import { SceneHtml as Html } from './SceneHtml';
 import { FileBox } from 'lucide-react';
 import { anatomyModels } from '../../data/modelRegistry';
 import { useModelAsset, clearModelCache } from '../../hooks/useModelAsset';

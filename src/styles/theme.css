@@ -1,1 +1,18 @@
 [data-theme=dark]{--text:#d9e6ec;--muted:#95a9b5;--surface:#18252f;--border:#2b3b47;--panel:#121f29;--viewer:#182b37;color:var(--text);background:var(--panel)}[data-theme=dark] .hero-visual,[data-theme=dark] .card-preview{background:radial-gradient(ellipse at 50% 35%,#28444e,#152732)}[data-theme=dark] .system-icon,[data-theme=dark] .system-pill,[data-theme=dark] .tree-row.active,[data-theme=dark] .viewer-toolbar button[aria-pressed=true],[data-theme=dark] .explode-action{background:#203b43;color:#78bfc6}[data-theme=dark] .education-band{background:#19333c;border-color:var(--border)}[data-theme=dark] .hero-callout{color:#adcbd0}[data-theme=dark] .viewer-stage{background:radial-gradient(ellipse at 48% 35%,#263e4b 0%,var(--viewer) 75%)}[data-theme=dark] .mode-switch select{border-color:var(--border)}[data-theme=dark] .anatomy-label{background:#192e39ec;color:#b8d5db;border-color:#49636e}[data-theme=dark] .anatomy-label.selected{border-color:#8fcbd0;color:#c9f7fb}[data-theme=dark] .interactive-badge{background:#24444d;border-color:#47757e;color:#a7d8dd}[data-theme=dark] .tree-row.active,[data-theme=dark] .structure-actions button.active{color:#8fcbd0}[data-theme=dark] .system-card:hover{border-color:#52828b}[data-theme=dark] .preview-skeleton{background:linear-gradient(90deg,transparent,#4c697933,transparent)}
+
+/* Theme ink is independent of the filled button colour. */
+[data-theme=dark]{color-scheme:dark;--accent:var(--brand-dark-accent,#8dccd4);--muted:#b2c2cc;--border:#3a4e5b}
+[data-theme=dark] ::-webkit-scrollbar-thumb{background:#59717f}
+[data-theme=dark] .structure-actions button:hover,[data-theme=dark] .structure-actions button.active,[data-theme=dark] .orientation-compass button:hover,[data-theme=dark] .orientation-compass button[aria-pressed=true],[data-theme=dark] .school-controls>button:hover,[data-theme=dark] .school-controls>button[aria-pressed=true],[data-theme=dark] .module-open:hover{background:#203b43;color:var(--accent)}
+[data-theme=dark] .explode-action.active{background:var(--action-accent);color:#fff}
+[data-theme=dark] .viewer-stage.background-clinical{background:radial-gradient(ellipse at 50% 40%,#293f4b,#182b37)}
+[data-theme=dark] .smart-label button,[data-theme=dark] .dissection-presets{background:#1c303bf2;color:#d6e6ed;border-color:var(--border)}
+[data-theme=dark] .smart-label button.selected,[data-theme=dark] .dissection-presets button[aria-pressed=true]{background:#294b53;color:#b5e5e9}
+[data-theme=dark] .dissection-presets button{color:#d6e6ed}
+[data-theme=dark] .attachment-label{background:#23413e;color:#b9ded6}
+[data-theme=dark] .preview-development-badge{background:#203b43;color:#c0d9de}
+[data-theme=dark] .viewer-toolbar button,[data-theme=dark] .zoom-buttons button,[data-theme=dark] .viewer-hint,[data-theme=dark] .info-disclaimer,[data-theme=dark] .card-index,[data-theme=dark] .card-tag,[data-theme=dark] .system-card small,[data-theme=dark] .hero-callout small{color:var(--muted)}
+[data-theme=dark] .living-eyebrow,[data-theme=dark] .living-hero em,[data-theme=dark] .living-card small,[data-theme=dark] .living-home-banner span,[data-theme=dark] .simulation-readout span,[data-theme=dark] .simulation-readout strong,[data-theme=dark] .simulation-stages>button>span,[data-theme=dark] .simulation-explanation>a,[data-theme=dark] .viewer-statusbar a{color:var(--accent)}
+[data-theme=dark] .living-hero>p,[data-theme=dark] .living-card p,[data-theme=dark] .living-footer p,[data-theme=dark] .living-home-banner p,[data-theme=dark] .living-card-preview>span{color:var(--muted)}
+[data-theme=dark] .living-controls.is-live{background:#203c40;border-color:#38575a;color:#c2dcd9}
+[data-theme=dark] .lab-viewport{background:var(--surface);color:var(--text);border-color:var(--border)}
